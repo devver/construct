@@ -7,6 +7,8 @@ class ConstructTest < Test::Unit::TestCase
   include Construct
 
   # add boolean flag to determine whether to switch into construct dir or not
+  # possible have user-supplied identifier for creating multiple containers (would help with test isolation as well)
+  # #directory should return object that can have #directory called on it again
 
   testing "creating a construct container" do
 
@@ -60,8 +62,60 @@ class ConstructTest < Test::Unit::TestCase
     end
 
     test "should not capture exceptions raised in block" do
+      err = RuntimeError.new("an error")
+      begin 
+        within_construct do
+          raise err
+        end
+      rescue RuntimeError => e
+        assert_same err, e
+      end
     end
     
+  end
+
+  testing "creating a subdirectory in container" do
+    
+    test "should exist within construct block" do
+      within_construct do |construct|
+        construct.directory 'foo'
+        assert (construct+'foo').directory?
+      end
+    end
+
+    test "should not exist after construct block" do
+      subdir = "unset"
+      within_construct do |construct|
+        construct.directory 'foo'
+        subdir = construct + 'foo'
+      end
+      assert !subdir.directory?
+    end
+
+    test "returns the new path name" do
+      within_construct do |construct|
+        assert_equal((construct+'foo'), construct.directory('foo'))
+      end
+    end
+
+    test "yield to block" do
+      sensor = "unset"
+      within_construct do |construct|
+        construct.directory('bar') do
+          sensor = "yielded"
+        end
+      end
+      assert_equal "yielded", sensor
+    end
+
+    test "block argument is subdirectory path" do
+      within_construct do |construct|
+        construct.directory('baz') do |dir|
+          assert_equal((construct+'baz'),dir)
+        end
+      end
+    end
+
   end
 
 end
