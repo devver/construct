@@ -15,6 +15,12 @@ class Test::Unit::TestCase
     raise "#{test_name} is already defined in #{self}" if defined
     define_method(test_name, &block)
   end
+
+  def self.pending_test(name, &block)
+    test(name) do
+      puts "\nPENDING: #{name} (in #{eval('"#{__FILE__}:#{__LINE__}"', block.binding)})"
+    end
+  end
   
 end
 
