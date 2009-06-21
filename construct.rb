@@ -5,12 +5,20 @@ require 'English'
 module Construct
 
   module PathExtensions
+    
+    attr_accessor :files
+    
     def directory(path)
       subdir = (self + path)
       subdir.mkpath
       yield subdir if block_given?
       subdir
     end
+    
+    def file(filename)
+      File.new(self+filename,'w')
+    end
+
   end
 
   def within_construct
