@@ -15,8 +15,13 @@ module Construct
       subdir
     end
     
-    def file(filename)
-      File.new(self+filename,'w')
+    def file(filename,contents=nil)
+      path = (self+filename)
+      File.open(path,'w') do |f|
+        contents = yield if block_given?
+        f << contents
+      end
+      path
     end
 
   end

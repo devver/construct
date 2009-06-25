@@ -85,23 +85,45 @@ class ConstructTest < Test::Unit::TestCase
     end
 
     test 'should not exist after construct block' do
-      file = 'unset'
+      filepath = 'unset'
       within_construct do |construct|
-        file = construct.file('foo.txt')
+        filepath = construct.file('foo.txt')
       end
-      assert !File.exists?(file.path)
+      assert !File.exists?(filepath)
     end
 
     test 'writes contents to file' do
-      pending
+      within_construct do |construct|
+        construct.file('foo.txt','abcdef')
+        assert_equal 'abcdef', File.read(construct+'foo.txt')
+      end
     end
-
+    
     test 'contents can be given in a block' do
-      pending
+      within_construct do |construct|
+        construct.file('foo.txt') do
+          <<-EOS
+File
+Contents
+          EOS
+        end
+        assert_equal "File\nContents\n", File.read(construct+'foo.txt')
+      end
     end
 
-    test 'returns file' do
-      pending
+    test 'contents block overwrites contents argument' do
+      within_construct do |construct|
+        construct.file('foo.txt','abc') do
+          'def'
+        end
+        assert_equal 'def', File.read(construct+'foo.txt')
+      end
+    end
+
+    test 'returns file path' do
+      within_construct do |construct|
+        assert_equal(construct+'foo.txt', construct.file('foo.txt'))
+      end
     end
 
   end
