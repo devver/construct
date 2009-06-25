@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'pending'
 
 class Test::Unit::TestCase
 

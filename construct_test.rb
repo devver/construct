@@ -93,15 +93,15 @@ class ConstructTest < Test::Unit::TestCase
     end
 
     test 'writes contents to file' do
-      # TODO
+      pending
     end
 
     test 'contents can be given in a block' do
-      # TODO
+      pending
     end
 
     test 'returns file' do
-      # TODO
+      pending
     end
 
   end
