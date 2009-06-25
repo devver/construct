@@ -3,18 +3,20 @@ require 'tmpdir'
 require 'English'
 require 'construct'
 require 'ruby-debug'
+require 'mocha'
 
 class ConstructTest < Test::Unit::TestCase
   include Construct
 
   # add boolean flag to determine whether to switch into construct dir or not
-  # possible have user-supplied identifier for creating multiple containers (would help with test isolation as well)
 
   testing 'creating a construct container' do
 
     test 'should exist' do
+      num = rand(1_000_000_000)
+      self.stubs(:rand).returns(num)
       within_construct do
-        assert File.directory?(File.join(Dir.tmpdir, "construct_container#{$PROCESS_ID}"))
+        assert File.directory?(File.join(Dir.tmpdir, "construct_container-#{$PROCESS_ID}-#{num}"))
       end
     end
 
@@ -27,8 +29,10 @@ class ConstructTest < Test::Unit::TestCase
     end
 
     test 'block argument should be container directory Pathname' do
+      num = rand(1_000_000_000)
+      self.stubs(:rand).returns(num)
       within_construct do |container_path|
-        assert_equal((Pathname(Dir.tmpdir)+"construct_container#{$PROCESS_ID}"), container_path)
+        assert_equal((Pathname(Dir.tmpdir)+"construct_container-#{$PROCESS_ID}-#{num}"), container_path)
       end
     end
 

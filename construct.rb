@@ -28,7 +28,7 @@ module Construct
   end
 
   def within_construct
-    path = (Pathname(Dir.tmpdir)+"construct_container#{$PROCESS_ID}")
+    path = (Pathname(Dir.tmpdir)+"construct_container-#{$PROCESS_ID}-#{rand(1_000_000_000)}")
     begin
       path.mkpath
       path.extend(PathExtensions)
