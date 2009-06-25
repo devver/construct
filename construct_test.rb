@@ -8,7 +8,8 @@ require 'mocha'
 class ConstructTest < Test::Unit::TestCase
   include Construct
 
-  # add boolean flag to determine whether to switch into construct dir or not
+  # rename test methods to include the word 'should'
+  # make the Dir.chdir calls place nicely with ruby-debug (non-trivial!)
 
   testing 'creating a construct container' do
 
@@ -32,7 +33,7 @@ class ConstructTest < Test::Unit::TestCase
       num = rand(1_000_000_000)
       self.stubs(:rand).returns(num)
       within_construct do |container_path|
-        assert_equal((Pathname(Dir.tmpdir)+"construct_container-#{$PROCESS_ID}-#{num}"), container_path)
+        assert_equal((Pathname(Construct.tmpdir)+"construct_container-#{$PROCESS_ID}-#{num}"), container_path)
       end
     end
 
@@ -187,6 +188,57 @@ Contents
       end
     end
 
+  end
+
+  testing "changing the working directory" do
+    
+    test 'current working directory is within construct' do
+      within_construct(true) do |construct|
+        assert_equal construct.to_s, Dir.pwd
+      end
+    end
+
+    test 'current working directory is unchanged outside of construct' do
+      old_pwd = Dir.pwd
+      within_construct(true) do |construct|
+      end
+      assert_equal old_pwd, Dir.pwd
+    end
+
+    test 'current working directory is unchanged after exception' do
+      old_pwd = Dir.pwd
+      begin
+        within_construct(true) do |construct|
+          raise 'something bad happens here'
+        end
+      rescue
+      end
+      assert_equal old_pwd, Dir.pwd
+    end
+    
+    test 'should not capture exceptions raised in block' do
+      error = assert_raises RuntimeError do
+        within_construct(true) do
+          raise 'fail!'
+        end
+      end
+      assert_equal 'fail!', error.message
+    end
+
+    test 'checking for a file is relative to container' do
+      within_construct(true) do |construct|
+        construct.file('foo.txt')
+        assert File.exists?('foo.txt')
+      end
+    end
+
+    test 'checking for a directory is relative to container' do
+      within_construct(true) do |construct|
+        construct.directory('mydir')
+        assert File.directory?('mydir')
+      end
+    end
+    
   end
 
 end
