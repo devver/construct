@@ -1,0 +1,7 @@
+defaults:
+  install_options: --include-dependencies
+gems:
+- name: bones
+- name: jeremymcanally-pending
+  install_options: "--source http://gems.github.com"
+- name: mocha
