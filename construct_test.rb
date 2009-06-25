@@ -9,7 +9,6 @@ class ConstructTest < Test::Unit::TestCase
 
   # add boolean flag to determine whether to switch into construct dir or not
   # possible have user-supplied identifier for creating multiple containers (would help with test isolation as well)
-  # #directory should return object that can have #directory called on it again
 
   testing 'creating a construct container' do
 
@@ -167,6 +166,20 @@ Contents
         construct.directory('baz') do |dir|
           assert_equal((construct+'baz'),dir)
         end
+      end
+    end
+
+    test 'can create nested directory in one call' do
+      within_construct do |construct|
+        construct.directory('foo/bar')
+        assert (construct+'foo/bar').directory?
+      end
+    end
+    
+    test 'can create a nested directory in two calls' do
+      within_construct do |construct|
+        construct.directory('foo').directory('bar')
+        assert (construct+'foo/bar').directory?
       end
     end
 

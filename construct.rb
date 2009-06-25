@@ -12,6 +12,7 @@ module Construct
       subdir = (self + path)
       subdir.mkpath
       yield subdir if block_given?
+      subdir.extend(PathExtensions)
       subdir
     end
     
