@@ -12,8 +12,8 @@ module Construct
       subdir = (self + path)
       subdir.mkpath
       subdir.extend(PathExtensions)
-      Dir.chdir(subdir) do
-        yield subdir if block_given?
+      maybe_change_dir(chdir,subdir) do
+        yield(subdir) if block_given?
       end
       subdir
     end
@@ -27,6 +27,14 @@ module Construct
       path
     end
 
+    def maybe_change_dir(chdir,path,&block)
+      if(chdir)
+        Dir.chdir(path,&block)
+      else
+        block.call
+      end
+    end
+
   end
 
   def within_construct(chdir=false)
@@ -34,7 +42,7 @@ module Construct
     begin
       path.mkpath
       path.extend(PathExtensions)
-      Dir.chdir(path) do
+      maybe_change_dir(chdir,path) do
         yield(path)
       end
     ensure
@@ -49,5 +57,6 @@ module Construct
   end
 
   extend(self)
+  include(PathExtensions)
   
 end

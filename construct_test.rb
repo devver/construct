@@ -192,6 +192,15 @@ Contents
   end
 
   testing "subdirectories changing the working directory" do
+
+    test 'by default, directory stays the same' do
+      old_pwd = Dir.pwd
+      within_construct do |construct|
+        construct.directory('foo') do
+          assert_equal old_pwd, Dir.pwd
+        end
+      end
+    end
     
     test 'current working directory is within subdirectory' do
       within_construct do |construct|
@@ -254,6 +263,13 @@ Contents
   end
 
   testing "changing the working directory" do
+    
+    test 'by default, directory stays the same' do
+      old_pwd = Dir.pwd
+      within_construct do |construct|
+        assert_equal old_pwd, Dir.pwd
+      end
+    end
     
     test 'current working directory is within construct' do
       within_construct(true) do |construct|
