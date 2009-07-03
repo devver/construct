@@ -193,18 +193,36 @@ Contents
 
   testing "subdirectories changing the working directory" do
 
-    test 'by default, directory stays the same' do
-      old_pwd = Dir.pwd
+    test 'can force directory stays the same' do
       within_construct do |construct|
+        old_pwd = Dir.pwd
+        construct.directory('foo',false) do
+          assert_equal old_pwd, Dir.pwd
+        end
+      end
+    end
+
+    test 'defaults chdir setting from construct' do
+      within_construct(false) do |construct|
+        old_pwd = Dir.pwd
         construct.directory('foo') do
           assert_equal old_pwd, Dir.pwd
+        end
+      end
+    end
+
+    test 'can override construct default' do
+      within_construct(false) do |construct|
+        old_pwd = Dir.pwd
+        construct.directory('foo', true) do |dir|
+          assert_equal dir.to_s, Dir.pwd
         end
       end
     end
     
     test 'current working directory is within subdirectory' do
       within_construct do |construct|
-        construct.directory('foo',true) do |dir|
+        construct.directory('foo') do |dir|
           assert_equal dir.to_s, Dir.pwd
         end
       end
@@ -213,7 +231,7 @@ Contents
     test 'current working directory is unchanged outside of subdirectory' do
       within_construct do |construct|
         old_pwd = Dir.pwd
-        construct.directory('foo', true)
+        construct.directory('foo')
         assert_equal old_pwd, Dir.pwd
       end
     end
@@ -222,7 +240,7 @@ Contents
       within_construct do |construct|
         old_pwd = Dir.pwd
         begin
-          construct.directory('foo',true) do
+          construct.directory('foo') do
             raise 'something bad happens here'
           end
         rescue
@@ -234,7 +252,7 @@ Contents
     test 'should not capture exceptions raised in block' do
       within_construct do |construct|
         error = assert_raises RuntimeError do
-          construct.directory('foo',true) do
+          construct.directory('foo') do
             raise 'fail!'
           end
         end
@@ -244,7 +262,7 @@ Contents
 
     test 'checking for a file is relative to subdirectory' do
       within_construct do |construct|
-        construct.directory('bar',true)  do |dir|
+        construct.directory('bar')  do |dir|
           dir.file('foo.txt')
           assert File.exists?('foo.txt')
         end
@@ -253,7 +271,7 @@ Contents
 
     test 'checking for a directory is relative to subdirectory' do
       within_construct do |construct|
-        construct.directory('foo',true) do |dir|
+        construct.directory('foo') do |dir|
           dir.directory('mydir')
           assert File.directory?('mydir')
         end
@@ -264,22 +282,22 @@ Contents
 
   testing "changing the working directory" do
     
-    test 'by default, directory stays the same' do
+    test 'can force directory stays the same' do
       old_pwd = Dir.pwd
-      within_construct do |construct|
+      within_construct(false) do |construct|
         assert_equal old_pwd, Dir.pwd
       end
     end
     
     test 'current working directory is within construct' do
-      within_construct(true) do |construct|
+      within_construct do |construct|
         assert_equal construct.to_s, Dir.pwd
       end
     end
 
     test 'current working directory is unchanged outside of construct' do
       old_pwd = Dir.pwd
-      within_construct(true) do |construct|
+      within_construct do |construct|
       end
       assert_equal old_pwd, Dir.pwd
     end
@@ -287,7 +305,7 @@ Contents
     test 'current working directory is unchanged after exception' do
       old_pwd = Dir.pwd
       begin
-        within_construct(true) do |construct|
+        within_construct do |construct|
           raise 'something bad happens here'
         end
       rescue
@@ -297,7 +315,7 @@ Contents
     
     test 'should not capture exceptions raised in block' do
       error = assert_raises RuntimeError do
-        within_construct(true) do
+        within_construct do
           raise 'fail!'
         end
       end
@@ -305,14 +323,14 @@ Contents
     end
 
     test 'checking for a file is relative to container' do
-      within_construct(true) do |construct|
+      within_construct do |construct|
         construct.file('foo.txt')
         assert File.exists?('foo.txt')
       end
     end
 
     test 'checking for a directory is relative to container' do
-      within_construct(true) do |construct|
+      within_construct do |construct|
         construct.directory('mydir')
         assert File.directory?('mydir')
       end

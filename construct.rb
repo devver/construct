@@ -6,9 +6,9 @@ module Construct
 
   module PathExtensions
     
-    attr_accessor :files
+    attr_accessor :construct__chdir_default
     
-    def directory(path,chdir=false)
+    def directory(path,chdir=construct__chdir_default)
       subdir = (self + path)
       subdir.mkpath
       subdir.extend(PathExtensions)
@@ -37,11 +37,12 @@ module Construct
 
   end
 
-  def within_construct(chdir=false)
+  def within_construct(chdir=true)
     path = (Pathname(tmpdir)+"construct_container-#{$PROCESS_ID}-#{rand(1_000_000_000)}")
     begin
       path.mkpath
       path.extend(PathExtensions)
+      path.construct__chdir_default = chdir
       maybe_change_dir(chdir,path) do
         yield(path)
       end
