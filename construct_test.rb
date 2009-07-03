@@ -8,6 +8,7 @@ require 'mocha'
 class ConstructTest < Test::Unit::TestCase
   include Construct
 
+  # replace rand with counter
   # rename test methods to include the word 'should'
   # make the Dir.chdir calls place nicely with ruby-debug (non-trivial!)
 
@@ -20,7 +21,7 @@ class ConstructTest < Test::Unit::TestCase
         assert File.directory?(File.join(Dir.tmpdir, "construct_container-#{$PROCESS_ID}-#{num}"))
       end
     end
-
+    
     test 'should yield to its block' do
       sensor = 'no yield'
       within_construct do
@@ -28,7 +29,7 @@ class ConstructTest < Test::Unit::TestCase
       end
       assert_equal 'yielded', sensor
     end
-
+    
     test 'block argument should be container directory Pathname' do
       num = rand(1_000_000_000)
       self.stubs(:rand).returns(num)
@@ -188,6 +189,68 @@ Contents
       end
     end
 
+  end
+
+  testing "subdirectories changing the working directory" do
+    
+    test 'current working directory is within subdirectory' do
+      within_construct do |construct|
+        construct.directory('foo',true) do |dir|
+          assert_equal dir.to_s, Dir.pwd
+        end
+      end
+    end
+
+    test 'current working directory is unchanged outside of subdirectory' do
+      within_construct do |construct|
+        old_pwd = Dir.pwd
+        construct.directory('foo', true)
+        assert_equal old_pwd, Dir.pwd
+      end
+    end
+
+    test 'current working directory is unchanged after exception' do
+      within_construct do |construct|
+        old_pwd = Dir.pwd
+        begin
+          construct.directory('foo',true) do
+            raise 'something bad happens here'
+          end
+        rescue
+        end
+        assert_equal old_pwd, Dir.pwd          
+      end
+    end
+    
+    test 'should not capture exceptions raised in block' do
+      within_construct do |construct|
+        error = assert_raises RuntimeError do
+          construct.directory('foo',true) do
+            raise 'fail!'
+          end
+        end
+        assert_equal 'fail!', error.message
+      end
+    end
+
+    test 'checking for a file is relative to subdirectory' do
+      within_construct do |construct|
+        construct.directory('bar',true)  do |dir|
+          dir.file('foo.txt')
+          assert File.exists?('foo.txt')
+        end
+      end
+    end
+
+    test 'checking for a directory is relative to subdirectory' do
+      within_construct do |construct|
+        construct.directory('foo',true) do |dir|
+          dir.directory('mydir')
+          assert File.directory?('mydir')
+        end
+      end
+    end
+    
   end
 
   testing "changing the working directory" do

@@ -8,11 +8,13 @@ module Construct
     
     attr_accessor :files
     
-    def directory(path)
+    def directory(path,chdir=false)
       subdir = (self + path)
       subdir.mkpath
-      yield subdir if block_given?
       subdir.extend(PathExtensions)
+      Dir.chdir(subdir) do
+        yield subdir if block_given?
+      end
       subdir
     end
     
@@ -32,8 +34,7 @@ module Construct
     begin
       path.mkpath
       path.extend(PathExtensions)
-      return_to_current_working_directory do
-        Dir.chdir(path)
+      Dir.chdir(path) do
         yield(path)
       end
     ensure
@@ -45,17 +46,6 @@ module Construct
     dir = nil
     Dir.chdir Dir.tmpdir do dir = Dir.pwd end # HACK FOR OSX
     dir
-  end
-
-  private
-  
-  def return_to_current_working_directory
-    pwd = Dir.pwd
-    begin
-      yield
-    ensure
-      Dir.chdir(pwd)
-    end
   end
 
   extend(self)
