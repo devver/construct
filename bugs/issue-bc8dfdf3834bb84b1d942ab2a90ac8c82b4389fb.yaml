@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Add files to make construct a proper gem
+desc: We'll need a Rakefile, a license.txt, an authors file, and will want to move tests to their own directory. Also, we'll need a gemspec file
+type: :task
+component: construct
+release: neo
+reporter: Benjamin Brinckerhoff <ben@devver.net>
+status: :unstarted
+disposition: 
+creation_time: 2009-08-18 15:31:45.185804 Z
+references: []
+
+id: bc8dfdf3834bb84b1d942ab2a90ac8c82b4389fb
+log_events: 
+- - 2009-08-18 15:31:49.976522 Z
+  - Benjamin Brinckerhoff <ben@devver.net>
+  - created
+  - ""
