@@ -5,8 +5,8 @@ type: :task
 component: construct
 release: neo
 reporter: Benjamin Brinckerhoff <ben@devver.net>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-08-18 17:19:03.766097 Z
 references: []
 
@@ -15,4 +15,8 @@ log_events:
 - - 2009-08-18 17:19:04.502056 Z
   - Benjamin Brinckerhoff <ben@devver.net>
   - created
+  - ""
+- - 2009-08-18 20:15:40.057331 Z
+  - Benjamin Brinckerhoff <ben@devver.net>
+  - closed with disposition fixed
   - ""
