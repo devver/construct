@@ -1,3 +1,7 @@
 .ditz-config
 .devver/
-
+announcement.txt
+coverage
+doc
+pkg
+.ditz-plugins
