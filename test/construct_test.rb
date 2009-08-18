@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.join(File.dirname(__FILE__), %w[test_helper])
 require 'tmpdir'
 require 'English'
 require 'construct'
@@ -7,11 +7,6 @@ require 'mocha'
 
 class ConstructTest < Test::Unit::TestCase
   include Construct
-
-  # TODOs
-  # replace rand with counter
-  # rename test methods to include the word 'should'
-  # make the Dir.chdir calls place nicely with ruby-debug (non-trivial!)
 
   testing 'creating a construct container' do
 
