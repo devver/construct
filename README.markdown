@@ -6,10 +6,30 @@ Construct
 DESCRIPTION:
 ============
 
+"This is the construct. It's our loading program. We can load anything, from clothing to equipment, weapons, and training simulations, anything we need" -- Morpheus
+
 Construct is a DSL for creating temporary files and directories during testing.
 
 SYNOPSIS:
 ========
+
+    class ExampleTest < Test::Unit::TestCase
+      include Construct::Helpers
+
+      def test_example
+        within_construct do |c|
+          c.directory 'alice/rabbithole' do |d|
+            d.file 'white_rabbit.txt', "I'm late!"
+            
+            assert_equal "I'm late!", File.read('white_rabbit.txt')
+          end
+        end
+      end
+
+    end
+
+USAGE
+=====
 
 To use Construct, you need to include the Construct module in your class like so:
 
