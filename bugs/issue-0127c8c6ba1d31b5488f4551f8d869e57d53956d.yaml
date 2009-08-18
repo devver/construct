@@ -8,7 +8,7 @@ type: :feature
 component: construct
 release: neo
 reporter: Benjamin Brinckerhoff <ben@devver.net>
-status: :unstarted
+status: :in_progress
 disposition: 
 creation_time: 2009-08-18 17:16:31.006045 Z
 references: []
@@ -18,4 +18,8 @@ log_events:
 - - 2009-08-18 17:16:33.750549 Z
   - Benjamin Brinckerhoff <ben@devver.net>
   - created
+  - ""
+- - 2009-08-18 18:23:37.187486 Z
+  - Avdi Grimm <avdi@avdi.org>
+  - changed status from unstarted to in_progress
   - ""

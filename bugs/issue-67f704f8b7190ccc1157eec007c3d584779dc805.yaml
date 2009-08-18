@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Switch to development/release branch structure
+desc: ""
+type: :task
+component: construct
+release: neo
+reporter: Avdi Grimm <avdi@avdi.org>
+status: :unstarted
+disposition: 
+creation_time: 2009-08-18 18:22:21.091404 Z
+references: []
+
+id: 67f704f8b7190ccc1157eec007c3d584779dc805
+log_events: 
+- - 2009-08-18 18:22:23.004080 Z
+  - Avdi Grimm <avdi@avdi.org>
+  - created
+  - ""
