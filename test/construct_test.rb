@@ -7,7 +7,7 @@ require 'ruby-debug'
 require 'mocha'
 
 class ConstructTest < Test::Unit::TestCase
-  include Construct
+  include Construct::Helpers
 
   testing 'creating a construct container' do
 
@@ -31,7 +31,9 @@ class ConstructTest < Test::Unit::TestCase
       num = rand(1_000_000_000)
       self.stubs(:rand).returns(num)
       within_construct do |container_path|
-        assert_equal((Pathname(Construct.tmpdir)+"construct_container-#{$PROCESS_ID}-#{num}"), container_path)
+        expected_path = (Pathname(Construct::Helpers.tmpdir) +
+          "construct_container-#{$PROCESS_ID}-#{num}")
+        assert_equal(expected_path, container_path)
       end
     end
 

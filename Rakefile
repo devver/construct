@@ -29,4 +29,6 @@ PROJ.test.files =  FileList['test/**/*_test.rb']
 PROJ.ruby_opts = []
 PROJ.readme_file = "README.markdown"
 
+PROJ.gem.development_dependencies << ["jeremymcanally-pending", "~> 0.1"]
+
 # EOF

@@ -8,8 +8,8 @@ type: :feature
 component: construct
 release: neo
 reporter: Benjamin Brinckerhoff <ben@devver.net>
-status: :in_progress
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-08-18 17:16:31.006045 Z
 references: []
 
@@ -23,3 +23,7 @@ log_events:
   - Avdi Grimm <avdi@avdi.org>
   - changed status from unstarted to in_progress
   - ""
+- - 2009-08-18 19:23:37.387572 Z
+  - Avdi Grimm <avdi@avdi.org>
+  - closed with disposition fixed
+  - Moved test helpers to Construct::Helpers
