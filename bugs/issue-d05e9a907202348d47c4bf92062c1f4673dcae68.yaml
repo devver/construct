@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Make Dir.chdir play nicely with ruby-debug
+desc: ""
+type: :bugfix
+component: construct
+release: neo
+reporter: Avdi Grimm <avdi@avdi.org>
+status: :unstarted
+disposition: 
+creation_time: 2009-08-18 15:21:33.793706 Z
+references: []
+
+id: d05e9a907202348d47c4bf92062c1f4673dcae68
+log_events: 
+- - 2009-08-18 15:21:37.449671 Z
+  - Avdi Grimm <avdi@avdi.org>
+  - created
+  - ""
