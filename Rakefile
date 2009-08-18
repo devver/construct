@@ -27,5 +27,6 @@ PROJ.version = Construct::VERSION
 PROJ.rubyforge.name = 'construct'
 PROJ.test.files =  FileList['test/**/*_test.rb']
 PROJ.ruby_opts = []
+PROJ.readme_file = "README.markdown"
 
 # EOF
