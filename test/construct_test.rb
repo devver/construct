@@ -1,7 +1,8 @@
 require File.join(File.dirname(__FILE__), %w[test_helper])
+require File.join(File.dirname(__FILE__), '..', 'lib', 'construct')
+
 require 'tmpdir'
 require 'English'
-require 'construct'
 require 'ruby-debug'
 require 'mocha'
 
@@ -159,7 +160,7 @@ Contents
     end
 
     test 'contents argument is ignored if block takes File arg' do
-       within_construct do |construct|
+      within_construct do |construct|
         construct.file('foo.txt','xyz') do |file|
           file << 'abc'
         end
