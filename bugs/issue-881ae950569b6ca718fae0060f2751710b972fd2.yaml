@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Write synoposis with examples
+desc: We need to give the basic usage for construct.
+type: :task
+component: construct
+release: neo
+reporter: Benjamin Brinckerhoff <ben@devver.net>
+status: :unstarted
+disposition: 
+creation_time: 2009-08-18 17:19:03.766097 Z
+references: []
+
+id: 881ae950569b6ca718fae0060f2751710b972fd2
+log_events: 
+- - 2009-08-18 17:19:04.502056 Z
+  - Benjamin Brinckerhoff <ben@devver.net>
+  - created
+  - ""

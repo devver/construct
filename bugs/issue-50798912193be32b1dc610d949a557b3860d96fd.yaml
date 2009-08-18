@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Add gemspec file
+desc: We'll need to be sure to include all our dependencies. Note that some dependencies (like Mocha) are only necessary if the user wants to run our tests.
+type: :task
+component: construct
+release: neo
+reporter: Benjamin Brinckerhoff <ben@devver.net>
+status: :unstarted
+disposition: 
+creation_time: 2009-08-18 17:18:22.309778 Z
+references: []
+
+id: 50798912193be32b1dc610d949a557b3860d96fd
+log_events: 
+- - 2009-08-18 17:18:23.566713 Z
+  - Benjamin Brinckerhoff <ben@devver.net>
+  - created
+  - ""

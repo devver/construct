@@ -1,0 +1,21 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Fix Construct::VERSION to not conflict with other VERSION constants when Constuct is included
+desc: |-
+  We have two options:
+  1. We could move the includable module to a submodule on Construct, so VERSION would not be added
+  2. We could change VERSION to CONSTRUCT_VERSION or something
+type: :feature
+component: construct
+release: neo
+reporter: Benjamin Brinckerhoff <ben@devver.net>
+status: :unstarted
+disposition: 
+creation_time: 2009-08-18 17:16:31.006045 Z
+references: []
+
+id: 0127c8c6ba1d31b5488f4551f8d869e57d53956d
+log_events: 
+- - 2009-08-18 17:16:33.750549 Z
+  - Benjamin Brinckerhoff <ben@devver.net>
+  - created
+  - ""
