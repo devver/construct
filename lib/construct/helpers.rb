@@ -26,4 +26,6 @@ module Construct
     end
 
   end
+  
+  extend Helpers
 end

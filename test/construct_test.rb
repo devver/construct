@@ -9,13 +9,25 @@ require 'mocha'
 class ConstructTest < Test::Unit::TestCase
   include Construct::Helpers
 
+  testing 'using within_construct explicitly' do
+
+    test 'creates construct' do
+      num = rand(1_000_000_000)
+      Construct.stubs(:rand).returns(num)
+      Construct::within_construct do |construct|
+        assert File.directory?(File.join(Construct::Helpers::tmpdir, "construct_container-#{$PROCESS_ID}-#{num}"))
+      end
+    end
+
+  end
+
   testing 'creating a construct container' do
 
     test 'should exist' do
       num = rand(1_000_000_000)
       self.stubs(:rand).returns(num)
-      within_construct do
-        assert File.directory?(File.join(Dir.tmpdir, "construct_container-#{$PROCESS_ID}-#{num}"))
+      within_construct do |construct|
+        assert File.directory?(File.join(Construct::Helpers::tmpdir, "construct_container-#{$PROCESS_ID}-#{num}"))
       end
     end
     
