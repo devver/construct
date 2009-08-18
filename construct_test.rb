@@ -100,8 +100,8 @@ class ConstructTest < Test::Unit::TestCase
 
     test 'writes contents to file' do
       within_construct do |construct|
-        construct.file('foo.txt','abcdef')
-        assert_equal 'abcdef', File.read(construct+'foo.txt')
+        construct.file('foo.txt','abcxyz')
+        assert_equal 'abcxyz', File.read(construct+'foo.txt')
       end
     end
     
@@ -120,9 +120,55 @@ Contents
     test 'contents block overwrites contents argument' do
       within_construct do |construct|
         construct.file('foo.txt','abc') do
-          'def'
+          'xyz'
         end
-        assert_equal 'def', File.read(construct+'foo.txt')
+        assert_equal 'xyz', File.read(construct+'foo.txt')
+      end
+    end
+
+    test 'block is passed File object' do
+      within_construct do |construct|
+        construct.file('foo.txt') do |file|
+          assert_equal((construct+'foo.txt').to_s, file.path)
+        end
+      end
+    end
+
+    test 'can write to File object passed to block' do
+      within_construct do |construct|
+        construct.file('foo.txt') do |file|
+          file << 'abc'
+        end
+        assert_equal 'abc', File.read(construct+'foo.txt')
+      end
+    end
+
+    test 'file is closed after block ends' do
+      within_construct do |construct|
+        construct_file = nil
+        construct.file('foo.txt') do |file|
+          construct_file = file
+        end
+        assert construct_file.closed?
+      end
+    end
+
+    test 'block return value not used as content if passed File object' do
+      within_construct do |construct|
+        construct.file('foo.txt') do |file|
+          file << 'abc'
+          'xyz'
+        end
+        assert_equal 'abc', File.read(construct+'foo.txt')
+      end
+    end
+
+    test 'contents argument is ignored if block takes File arg' do
+       within_construct do |construct|
+        construct.file('foo.txt','xyz') do |file|
+          file << 'abc'
+        end
+        assert_equal 'abc', File.read(construct+'foo.txt')
       end
     end
 
