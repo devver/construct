@@ -17,6 +17,7 @@ class Test::Unit::TestCase
     define_method(test_name, &block)
   end
 
+  # TODO - this isn't used. Take it out.
   def self.pending_test(name, &block)
     test(name) do
       puts "\nPENDING: #{name} (in #{eval('"#{__FILE__}:#{__LINE__}"', block.binding)})"

@@ -8,6 +8,7 @@ require 'mocha'
 class ConstructTest < Test::Unit::TestCase
   include Construct
 
+  # TODOs
   # replace rand with counter
   # rename test methods to include the word 'should'
   # make the Dir.chdir calls place nicely with ruby-debug (non-trivial!)
@@ -128,6 +129,28 @@ Contents
     test 'returns file path' do
       within_construct do |construct|
         assert_equal(construct+'foo.txt', construct.file('foo.txt'))
+      end
+    end
+
+    test 'can create file including path in one call' do
+      within_construct do |construct|
+        construct.file('foo/bar/baz.txt')
+        assert (construct+'foo/bar/baz.txt').exist?
+      end
+    end
+
+    test 'can create file including path in one call when directories exists' do
+      within_construct do |construct|
+        construct.directory('foo/bar')
+        construct.file('foo/bar/baz.txt')
+        assert (construct+'foo/bar/baz.txt').exist?
+      end
+    end
+
+    test 'can create file including path with chained calls' do
+      within_construct do |construct|
+        construct.directory('foo').directory('bar').file('baz.txt')
+        assert (construct+'foo/bar/baz.txt').exist?
       end
     end
 

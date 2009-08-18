@@ -18,8 +18,9 @@ module Construct
       subdir
     end
     
-    def file(filename,contents=nil)
-      path = (self+filename)
+    def file(filepath,contents=nil)
+      path = (self+filepath)
+      path.dirname.mkpath
       File.open(path,'w') do |f|
         contents = yield if block_given?
         f << contents
