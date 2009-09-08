@@ -9,13 +9,17 @@ require 'mocha'
 class ConstructTest < Test::Unit::TestCase
   include Construct::Helpers
 
+  def teardown
+    Construct.destroy_all!
+  end
+
   testing 'using within_construct explicitly' do
 
     test 'creates construct' do
       num = rand(1_000_000_000)
       Construct.stubs(:rand).returns(num)
       Construct::within_construct do |construct|
-        assert File.directory?(File.join(Construct::Helpers::tmpdir, "construct_container-#{$PROCESS_ID}-#{num}"))
+        assert File.directory?(File.join(Construct.tmpdir, "construct_container-#{$PROCESS_ID}-#{num}"))
       end
     end
 
@@ -27,7 +31,7 @@ class ConstructTest < Test::Unit::TestCase
       num = rand(1_000_000_000)
       self.stubs(:rand).returns(num)
       within_construct do |construct|
-        assert File.directory?(File.join(Construct::Helpers::tmpdir, "construct_container-#{$PROCESS_ID}-#{num}"))
+        assert File.directory?(File.join(Construct.tmpdir, "construct_container-#{$PROCESS_ID}-#{num}"))
       end
     end
     
@@ -43,7 +47,7 @@ class ConstructTest < Test::Unit::TestCase
       num = rand(1_000_000_000)
       self.stubs(:rand).returns(num)
       within_construct do |container_path|
-        expected_path = (Pathname(Construct::Helpers.tmpdir) +
+        expected_path = (Pathname(Construct.tmpdir) +
           "construct_container-#{$PROCESS_ID}-#{num}")
         assert_equal(expected_path, container_path)
       end
@@ -415,6 +419,44 @@ Contents
       end
     end
     
+  end
+
+  testing "#create_construct" do
+    test "returns a working Construct" do 
+      it = create_construct
+      it.directory "foo"
+      it.file "bar", "CONTENTS"
+      assert (it + "foo").directory?
+      assert_equal "CONTENTS", (it + "bar").read
+    end
+  end
+
+  testing "#chdir" do
+    test "executes its block in the context of the construct" do
+      it = create_construct
+      assert_not_equal it.to_s, Dir.pwd
+      sensor = :unset
+      it.chdir do
+        sensor = Dir.pwd
+      end
+      assert_equal it.to_s, sensor
+    end
+
+    test "leaves construct directory on block exit" do
+      it = create_construct
+      it.chdir do
+        # NOOP
+      end
+      assert_not_equal it.to_s, Dir.pwd
+    end
+  end
+
+  testing "#destroy!" do
+    test "removes the construct container" do
+      it = create_construct
+      it.destroy!
+      assert !File.exist?(it.to_s)
+    end
   end
 
 end

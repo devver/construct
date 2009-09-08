@@ -7,7 +7,7 @@ module Construct
       subdir = (self + path)
       subdir.mkpath
       subdir.extend(PathExtensions)
-      maybe_change_dir(chdir,subdir) do
+      subdir.maybe_change_dir(chdir) do
         yield(subdir) if block_given?
       end
       subdir
@@ -30,12 +30,22 @@ module Construct
       path
     end
 
-    def maybe_change_dir(chdir,path,&block)
+    def maybe_change_dir(chdir, &block)
       if(chdir)
-        Dir.chdir(path,&block)
+        self.chdir(&block)
       else
         block.call
       end
+    end
+
+    # Note: Pathname implements #chdir directly, but it is deprecated in favor
+    # of Dir.chdir
+    def chdir(&block)
+      Dir.chdir(self, &block)
+    end
+
+    def destroy!
+      rmtree
     end
 
   end

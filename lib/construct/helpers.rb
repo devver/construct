@@ -6,23 +6,21 @@ module Construct
     extend self
 
     def within_construct(chdir=true)
-      path = (Pathname(tmpdir)+"construct_container-#{$PROCESS_ID}-#{rand(1_000_000_000)}")
-      begin
-        path.mkpath
-        path.extend(PathExtensions)
-        path.construct__chdir_default = chdir
-        maybe_change_dir(chdir,path) do
-          yield(path)
-        end
-      ensure
-        path.rmtree
+      container = create_construct(chdir)
+      container.maybe_change_dir(chdir) do
+        yield(container)
       end
+    ensure
+      container.destroy!
     end
 
-    def tmpdir
-      dir = nil
-      Dir.chdir Dir.tmpdir do dir = Dir.pwd end # HACK FOR OSX
-      dir
+    def create_construct(chdir=true)
+      path = (Pathname(Construct.tmpdir) + 
+        "#{CONTAINER_PREFIX}-#{$PROCESS_ID}-#{rand(1_000_000_000)}")
+      path.mkpath
+      path.extend(PathExtensions)
+      path.construct__chdir_default = chdir
+      path
     end
 
   end
