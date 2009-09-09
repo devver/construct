@@ -10,4 +10,5 @@ pkg
 .devver/devver_opts.yml.bak
 .devver/included_list
 .devver/project_id
+*.gem
 
