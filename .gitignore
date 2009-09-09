@@ -4,3 +4,10 @@ coverage
 doc
 pkg
 .ditz-plugins
+.devver/client.log
+.devver/client_version
+.devver/devver_excluded_files
+.devver/devver_opts.yml.bak
+.devver/included_list
+.devver/project_id
+
