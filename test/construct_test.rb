@@ -112,6 +112,13 @@ class ConstructTest < Test::Unit::TestCase
       assert !File.exists?(filepath)
     end
 
+    test 'should have empty file contents by default' do
+      within_construct do |construct|
+        construct.file('foo.txt')
+        assert_equal '', File.read('foo.txt')
+      end
+    end
+
     test 'writes contents to file' do
       within_construct do |construct|
         construct.file('foo.txt','abcxyz')
