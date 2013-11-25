@@ -18,13 +18,13 @@ require 'construct'
 
 task :default => 'test'
 
-PROJ.name = 'construct'
+PROJ.name = 'test-construct'
 
 PROJ.authors = 'Ben Brinckerhoff (ben@devver.net) and Avdi Grimm (avdi@devver.net)'
 PROJ.email = 'ben@devver.net, avdi@devver.net'
 PROJ.url = 'http://github.com/devver/construct'
 PROJ.version = Construct::VERSION
-PROJ.rubyforge.name = 'construct'
+PROJ.rubyforge.name = 'test-construct'
 PROJ.test.files =  FileList['test/**/*_test.rb']
 PROJ.ruby_opts = []
 PROJ.readme_file = "README.markdown"
