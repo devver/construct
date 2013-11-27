@@ -3,7 +3,6 @@ require File.join(File.dirname(__FILE__), '..', 'lib', 'construct')
 
 require 'tmpdir'
 require 'English'
-require 'ruby-debug'
 require 'mocha'
 
 class ConstructTest < Test::Unit::TestCase
