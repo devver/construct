@@ -2,10 +2,12 @@ require 'pathname'
 require 'tmpdir'
 require 'English'
 
+puts "WARNING: test-construct is no longer maintained. Please switch to test_construct."
+
 module Construct
 
   # :stopdoc:
-  VERSION = '1.2.0'
+  VERSION = '1.2.1'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   # :startdoc:
