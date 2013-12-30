@@ -2,12 +2,12 @@ require 'pathname'
 require 'tmpdir'
 require 'English'
 
-puts "WARNING: test-construct is no longer maintained. Please switch to test_construct."
-
 module Construct
 
+  DEPRECATION_WARNING = "WARNING: test-construct is no longer maintained. Please switch to test_construct."
+
   # :stopdoc:
-  VERSION = '1.2.1'
+  VERSION = '1.2.2'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   # :startdoc:
@@ -66,5 +66,7 @@ module Construct
 end  # module Construct
 
 Construct.require_all_libs_relative_to(__FILE__)
+
+$stderr.puts Construct::DEPRECATION_WARNING
 
 # EOF
